@@ -143,6 +143,16 @@ body{
   background:linear-gradient(100deg, #B8914C, #F0DCA2 50%, #B8914C);
   box-shadow:0 6px 16px rgba(120,80,40,.22); transition:transform .2s ease, filter .2s ease;
 }
+.rsvp{ position:relative; overflow:hidden; animation:beckon 2.4s ease-in-out infinite; }
+.rsvp::before{ content:""; position:absolute; inset:0; border-radius:inherit; background:linear-gradient(105deg, transparent 35%, rgba(255,252,240,.75) 50%, transparent 65%); transform:translateX(-120%); animation:glint 3.2s ease-in-out infinite; pointer-events:none; }
+.rsvp::after{ content:""; position:absolute; inset:-2px; border-radius:inherit; pointer-events:none; }
+.rsvpw{ position:relative; display:inline-block; }
+.rsvpw::before, .rsvpw::after{ content:""; position:absolute; inset:0; border-radius:999px; border:1.5px solid var(--gold2); opacity:0; animation:ripple 2.4s ease-out infinite; pointer-events:none; }
+.rsvpw::after{ animation-delay:1.2s; }
+@keyframes beckon{ 0%,100%{ transform:scale(1); box-shadow:0 6px 16px rgba(120,80,40,.22); } 50%{ transform:scale(1.06); box-shadow:0 10px 26px rgba(168,128,63,.42); } }
+@keyframes glint{ 0%,40%{ transform:translateX(-120%); } 75%,100%{ transform:translateX(120%); } }
+@keyframes ripple{ 0%{ transform:scale(1); opacity:.7; } 100%{ transform:scale(1.35,1.7); opacity:0; } }
+@media (prefers-reduced-motion: reduce){ .rsvp, .rsvp::before, .rsvpw::before, .rsvpw::after{ animation:none; } }
 .rsvp:hover{ transform:translateY(-1px); filter:brightness(1.05); }
 .rsvp:focus-visible{ outline:3px solid var(--gold); outline-offset:4px; }
 .reply{ font-family:"Pinyon Script", cursive; font-size:2.3rem; color:var(--gold); margin:0 0 6px; opacity:0; transition:opacity .8s ease; }
@@ -355,7 +365,7 @@ body{
     <p class="sign">Yoringiz</p>
     <svg class="flour" viewBox="0 0 200 24" aria-hidden="true"><path d="M8 14 C 50 4, 80 22, 100 12 C 120 2, 150 22, 192 10" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M100 12 m-5 0 a5 4 0 1 0 10 0 a5 4 0 1 0 -10 0" fill="none" stroke="currentColor" stroke-width="1"/></svg>
     <p class="reply" id="reply" aria-live="polite"></p>
-    <button class="rsvp" id="rsvp" type="button">Albatta boraman</button>
+    <span class="rsvpw" id="rsvpw"><button class="rsvp" id="rsvp" type="button">Albatta boraman</button></span>
   </section>
 
   <section class="paper dua reveal">
@@ -517,7 +527,7 @@ body{
 
   var rsvp = document.getElementById('rsvp'), reply = document.getElementById('reply');
   rsvp.addEventListener('click', function(){
-    rsvp.style.display = 'none'; reply.textContent = 'Kutaman, inshaAlloh'; reply.classList.add('on');
+    document.getElementById('rsvpw').style.display = 'none'; reply.textContent = 'Kutaman, inshaAlloh'; reply.classList.add('on');
     if (reduce) return;
     for (var i = 0; i < 16; i++){
       (function(i){ setTimeout(function(){
